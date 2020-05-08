@@ -7,6 +7,13 @@ from . import get_mail
 from .models import Mail
 # Create your views here.
 
+from django.views import View
+
+class MyView(View):
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponse('Hello, World!')
+
 def update_db(mail):
 	with open("mailgetter/mail.json") as mailfile:
 		mailconfig=json.loads(mailfile.read())

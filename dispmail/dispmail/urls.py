@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 import mailgetter
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title="WAKTI")
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('mail/', include('mailgetter.urls'))
+    path('mail/', include('mailgetter.urls')),
+    path('', schema_view)
 ]
+

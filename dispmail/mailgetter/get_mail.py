@@ -63,8 +63,10 @@ def check_folder(folder,con,user,password,imap,to_adress): #Inbox
                         content=message.text
                     else:
                         content=message.html
-
-                    mail_result["content"]=base64.b64encode(content.encode('ascii'))    
+                    if content==None or content=="":
+                        mail_result["content"]=""
+                    else:
+                        mail_result["content"]=base64.b64encode(content.encode('ascii'))    
                     result.append(mail_result)
                 except UnicodeEncodeError as e: 
                     pass
