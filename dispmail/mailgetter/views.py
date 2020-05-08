@@ -9,10 +9,6 @@ from .models import Mail
 
 from django.views import View
 
-class MyView(View):
-
-    def get(self, request, *args, **kwargs):
-        return HttpResponse('Hello, World!')
 
 def update_db(mail):
 	with open("mailgetter/mail.json") as mailfile:
