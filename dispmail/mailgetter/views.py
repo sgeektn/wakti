@@ -8,7 +8,7 @@ from .models import Mail
 # Create your views here.
 
 from django.views import View
-
+from rest_framework.decorators import api_view
 
 def update_db(mail):
 	with open("mailgetter/mail.json") as mailfile:
@@ -24,7 +24,7 @@ def update_db(mail):
 		maildb.content=mail_json["content"]
 		maildb.save()
 
-
+@api_view(['GET'])
 def getAdress(request,domain="all"):
 	
 	domains_list=[]
@@ -44,6 +44,7 @@ def getAdress(request,domain="all"):
 	result["mail"]=prefix+"@"+suffix
 	return JsonResponse(result)
 
+@api_view(['GET'])
 def getDomains(request):
 	
 	domains_list=[]
@@ -58,7 +59,7 @@ def getDomains(request):
 	return JsonResponse(domains_list,safe=False)
 
 
-
+@api_view(['GET'])
 def getMail(request,mail):
 	update_db(mail)
 	result={}
@@ -73,7 +74,7 @@ def getMail(request,mail):
 
 
 
-
+@api_view(['GET'])
 def getMails(request,mail):
 	update_db(mail)
 	result=[]
