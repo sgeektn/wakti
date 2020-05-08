@@ -9,6 +9,7 @@ from .models import Mail
 
 from django.views import View
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 
 def update_db(mail):
 	with open("mailgetter/mail.json") as mailfile:
@@ -24,68 +25,82 @@ def update_db(mail):
 		maildb.content=mail_json["content"]
 		maildb.save()
 
-@api_view(['GET'])
-def getAdress(request,domain="all"):
+class GetAdress(APIView):
+	"""
+	Generate disposable email adress
+	"""
+	def get(self,request,domain="all"):
+		
+		domains_list=[]
+		with open("mailgetter/domains.txt") as domains:
+			domains_list=domains.readlines()
+			domains.close()
+		for i in range(len(domains_list)):
+			if domains_list[i][-1]=='\n':
+				domains_list[i]=domains_list[i][0:-1].lower()
+		if domain=='all':
+			suffix=choice(domains_list)
+		else:
+			if domain.lower() not in domains_list:
+				return JsonResponse({"error":"domain not authorised"})
+			else:
+				suffix=domain
+		prefix=''.join(choice("azertyuiopqsdfghjklmwxcvbn1234567890") for i in range(15))
+		result={}
+		result["mail"]=prefix+"@"+suffix
+		return JsonResponse(result)
+
+class GetDomains(APIView):
+	"""
+	Get available domains
+	"""
+	def get(self,request):
+		
+		domains_list=[]
+		with open("mailgetter/domains.txt") as domains:
+			domains_list=domains.readlines()
+			domains.close()
+		for i in range(len(domains_list)):
+			if domains_list[i][-1]=='\n':
+				domains_list[i]=domains_list[i][0:-1]
+		
+		
+		return JsonResponse(domains_list,safe=False)
 	
-	domains_list=[]
-	with open("mailgetter/domains.txt") as domains:
-		domains_list=domains.readlines()
-		domains.close()
-	for i in range(len(domains_list)):
-		if domains_list[i][-1]=='\n':
-			domains_list[i]=domains_list[i][0:-1].lower()
-	if domain=='all':
-		suffix=choice(domains_list)
-	else:
-		if domain.lower() not in domains_list:
-			return JsonResponse({"error":"domain not authorised"})
-	prefix=''.join(choice("azertyuiopqsdfghjklmwxcvbn1234567890") for i in range(15))
-	result={}
-	result["mail"]=prefix+"@"+suffix
-	return JsonResponse(result)
 
-@api_view(['GET'])
-def getDomains(request):
+class GetMail(APIView):
+	"""
+	Get last mail
+	"""
+	def get(self,request,mail):
+		update_db(mail)
+		result={}
+		mail=Mail.objects.filter(reciever=mail).last()
+		if mail!=None:
+			result["sender"]=mail.sender
+			result["reciever"]=mail.reciever
+			result["subject"]=mail.subject
+			result["content"]=mail.content[2:-1]
 	
-	domains_list=[]
-	with open("mailgetter/domains.txt") as domains:
-		domains_list=domains.readlines()
-		domains.close()
-	for i in range(len(domains_list)):
-		if domains_list[i][-1]=='\n':
-			domains_list[i]=domains_list[i][0:-1]
-	
-	
-	return JsonResponse(domains_list,safe=False)
-
-
-@api_view(['GET'])
-def getMail(request,mail):
-	update_db(mail)
-	result={}
-	mail=Mail.objects.filter(reciever=mail).last()
-	if mail!=None:
-		result["sender"]=mail.sender
-		result["reciever"]=mail.reciever
-		result["subject"]=mail.subject
-		result["content"]=mail.content[2:-1]
-
-	return JsonResponse(result)
+		return JsonResponse(result)
 
 
 
-@api_view(['GET'])
-def getMails(request,mail):
-	update_db(mail)
-	result=[]
-	mails=Mail.objects.filter(reciever=mail)
-	for mail in mails:
-		result_object={}
-		result_object["sender"]=mail.sender
-		result_object["reciever"]=mail.reciever
-		result_object["subject"]=mail.subject
-		result_object["content"]=mail.content[2:-1]
-		result.append(result_object)
-	return JsonResponse(result,safe=False)
+class GetMails(APIView):
+	"""
+	Get all recieved mails
+	"""
+	def get(self,request,mail):
+		update_db(mail)
+		result=[]
+		mails=Mail.objects.filter(reciever=mail)
+		for mail in mails:
+			result_object={}
+			result_object["sender"]=mail.sender
+			result_object["reciever"]=mail.reciever
+			result_object["subject"]=mail.subject
+			result_object["content"]=mail.content[2:-1]
+			result.append(result_object)
+		return JsonResponse(result,safe=False)
 
 

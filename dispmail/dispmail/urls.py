@@ -22,6 +22,6 @@ schema_view = get_swagger_view(title="WAKTI")
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('mail/', include('mailgetter.urls')),
-    path('', schema_view)
+    path('api/', schema_view)
 ]
 

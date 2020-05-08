@@ -25,7 +25,7 @@ SECRET_KEY = '+-t68c9y-u$8i4o^pgco2xkf+4wed@7urbi*vm4i#mod0+^t(d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["9d61093d.ngrok.io"]
 
 DOMAINS=["invoice.fund"]
 # Application definition

@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from . import views
+from mailgetter import views
 
 urlpatterns = [
-    path('getAdress/', views.getAdress),
-    path('getAdress/<str:domain>', views.getAdress),
-    path('getDomains/', views.getDomains),
-    path('getLastMail/<str:mail>', views.getMail),
-    path('getMails/<str:mail>', views.getMails)
+    path('getAdress/', views.GetAdress.as_view()),
+    path('getAdress/<str:domain>', views.GetAdress.as_view()),
+    path('getDomains/', views.GetDomains.as_view()),
+    path('getLastMail/<str:mail>', views.GetMail.as_view()),
+    path('getMails/<str:mail>', views.GetMails.as_view())
 ]
