@@ -72,11 +72,15 @@ def check_folder(folder,con,user,password,imap,to_adress): #Inbox
                     pass
     return result
 def main(user,password,imap_url,to_adress):
-    con = imaplib.IMAP4_SSL(imap_url)  
-    con.login(user, password)  
-    #con.close()
-    return (check_folder("Inbox", con,user,password,imap_url,to_adress)+check_folder("[Gmail]/Spam", con,user,password,imap_url,to_adress))
+    try:
+        con = imaplib.IMAP4_SSL(imap_url)  
+        con.login(user, password)  
+        #con.close()
+        return (check_folder("Inbox", con,user,password,imap_url,to_adress)+check_folder("[Gmail]/Spam", con,user,password,imap_url,to_adress))
+    except:
+        return []
     
 
 if __name__ == "__main__": 
+    #Its not my personal adress , don't try to change pass 
     print(main("garvacht@gmail.com", "001001Az", "imap.gmail.com", "samifakhfzkh@invoice.fund"))
