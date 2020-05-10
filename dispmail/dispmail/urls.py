@@ -18,10 +18,15 @@ from django.urls import path,include
 import mailgetter
 from rest_framework_swagger.views import get_swagger_view
 
-schema_view = get_swagger_view(title="WAKTI")
-urlpatterns = [
+
+
+urlpatterns_for_swagger = [
+    path('mail/', include('mailgetter.urls'))
+]
+schema_view = get_swagger_view(title="WAKTI",patterns=urlpatterns_for_swagger)
+
+urlpatterns =urlpatterns_for_swagger+ [
     path('admin/', admin.site.urls),
-    path('mail/', include('mailgetter.urls')),
     path('api/', schema_view)
 ]
 
