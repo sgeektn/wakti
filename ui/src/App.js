@@ -8,6 +8,12 @@ function App() {
   return (
     <BrowserRouter>
       <Menu />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <Route exact path="/" component={Home} />
       <Route exact path="/api" component={Api} />
       <Route exact path="/aboutus" component={AboutUs} />

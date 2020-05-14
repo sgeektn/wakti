@@ -1,13 +1,21 @@
-import React from 'react';
-import SwaggerUI from "swagger-ui-react";
-import "swagger-ui-react/swagger-ui.css";
- 
-function Api() {
-  return (
-    <div>
-    <SwaggerUI url="https://petstore.swagger.io/v2/swagger.json" />
-    </div>
-  );
-}
+import React, { Component } from 'react';
+import SwaggerUI from 'swagger-ui';
+import './Api.css'
+import '../../node_modules/swagger-ui/dist/swagger-ui.css'
 
+class Api extends Component {
+    componentDidMount() {
+        SwaggerUI({
+          domNode: document.getElementById("api-data"),
+          url: 'http://127.0.0.1:8000/api/?format=openapi'
+        })
+    }
+    render(){
+        return (
+            <div className="Api">
+              <div id="api-data" />
+            </div>
+        );
+    }
+}
 export default Api;
