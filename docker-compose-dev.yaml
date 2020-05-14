@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
       args:
         allowed_hosts: "127.0.0.1;localhost"
-        sub_key: $SUB_KEY      
+        debug: "false"      
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     container_name: wakti-back-dev
 
