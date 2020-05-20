@@ -14,12 +14,18 @@ class WebMail extends Component {
       this.setState({ sender : mail.sender , subject: mail.subject , content:mail.content});
       document.getElementById("myModal").style.display="block";
     }
+    deleteMail(mail){
+      fetch("http://127.0.0.1:8000/mail/deleteMail/"+mail.reciever+"/"+mail.id).then((response)=> response.json()).then((data)=>{ this.domains=data})
+      this.props.update();
+    }
     render(){
         let mails=(this.props.mails.length)?this.props.mails.map( (mail,index) => 
                                                       (<tr key={index}>
                                                         <td>{mail.sender}</td>
                                                         <td>{mail.subject}</td>
-                                                        <td><button onClick={() => this.handleShow(mail) } className="btn btn-info" type="button" style={{padding:"0px"}} >View</button></td>
+                                                        <td><button onClick={() => this.handleShow(mail) } className="btn btn-info" type="button" style={{padding:"0px"}} >View</button>
+                                                        <button onClick={() => this.deleteMail(mail) } className="btn btn-info" type="button" style={{padding:"0px"}} >Delete</button>
+                                                        </td>
                                                       </tr>) )
                                                       :<tr><td colSpan='3'><div><center><Loading /><p>Your inbox is empty<br />Waiting for incoming emails</p></center></div></td></tr>;
 

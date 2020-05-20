@@ -22,5 +22,6 @@ urlpatterns = [
     path('getAdress/<str:domain>', views.GetAdress.as_view()),
     path('getDomains/', views.GetDomains.as_view()),
     path('getLastMail/<str:mail>', views.GetMail.as_view()),
+    path('deleteMail/<str:mail>/<int:mail_id>', views.DeleteMail.as_view()),
     path('getMails/<str:mail>', views.GetMails.as_view())
 ]

@@ -5,11 +5,19 @@ import sys
 import json
 from . import get_mail
 from .models import Mail
+import datetime
 # Create your views here.
 
 from django.views import View
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
+
+def purge_mail():
+	now=datetime.datetime.now()
+	for mail in Mail.objects.all():
+		if (now-mail.created_at.replace(tzinfo=None)) >= (datetime.date(2011, 1, 5)-datetime.date(2011, 1, 2)):
+			mail.delete()
+
 
 def update_db(mail):
 	with open("mailgetter/mail.json") as mailfile:
@@ -55,7 +63,7 @@ class GetDomains(APIView):
 	Get available domains
 	"""
 	def get(self,request):
-		
+		purge_mail()
 		domains_list=[]
 		with open("mailgetter/domains.txt") as domains:
 			domains_list=domains.readlines()
@@ -73,10 +81,12 @@ class GetMail(APIView):
 	Get last mail
 	"""
 	def get(self,request,mail):
+		purge_mail()
 		update_db(mail)
 		result={}
 		mail=Mail.objects.filter(reciever=mail).last()
 		if mail!=None:
+			result["id"]=mail.id
 			result["sender"]=mail.sender
 			result["reciever"]=mail.reciever
 			result["subject"]=mail.subject
@@ -85,17 +95,34 @@ class GetMail(APIView):
 		return JsonResponse(result)
 
 
+class DeleteMail(APIView):
+	"""
+	Delete mail , must specify id and reciever
+	"""
+	def get(self,request,mail,mail_id):
+		result={}
+		mail=Mail.objects.filter(id=mail_id,reciever=mail).last()
+		if mail!=None:
+			print("ok")
+			mail.delete()
+			return JsonResponse({"result":"ok"})
+		else:
+			return JsonResponse({"result":"error you need to specify reciever mail and mail id"})
+
+
 
 class GetMails(APIView):
 	"""
 	Get all recieved mails
 	"""
 	def get(self,request,mail):
+		purge_mail()
 		update_db(mail)
 		result=[]
 		mails=Mail.objects.filter(reciever=mail)
 		for mail in mails:
 			result_object={}
+			result_object["id"]=mail.id
 			result_object["sender"]=mail.sender
 			result_object["reciever"]=mail.reciever
 			result_object["subject"]=mail.subject
