@@ -1,15 +1,25 @@
 version: '3'
 
 services:
-  wakti-back-dev:
+  wakti-back:
     build:
       context: ./dispmail
       dockerfile: Dockerfile
       args:
         allowed_hosts: "127.0.0.1;localhost"
-        debug: "false"      
+        debug: "true"      
     command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-    container_name: wakti-back-dev
+    container_name: wakti-back
 
     ports:
       - "8000:8000"
+  wakti-front:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    command: bash -c "npm install;npm start"
+    container_name: wakti-front
+    tty: true
+
+    ports:
+      - "3000:3000"

@@ -7,7 +7,7 @@ class Api extends Component {
     componentDidMount() {
         SwaggerUI({
           domNode: document.getElementById("api-data"),
-          url: 'http://127.0.0.1:8000/api/?format=openapi'
+          url: "http://"+window.location.hostname+":8000/api/?format=openapi"
         })
     }
     render(){

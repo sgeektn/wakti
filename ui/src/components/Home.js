@@ -5,7 +5,7 @@ import WebMail from './WebMail';
 class Home extends Component {
 
     componentDidMount(){
-       fetch("http://127.0.0.1:8000/mail/getDomains").then((response)=> response.json()).then((data)=>{ this.domains=data})
+       fetch("http://"+window.location.hostname+":8000/mail/getDomains").then((response)=> response.json()).then((data)=>{ this.domains=data})
     }
     constructor(props){
        super(props)
@@ -14,7 +14,7 @@ class Home extends Component {
     }
     updateMails(){
         const mail=this.state.mail;
-        fetch("http://127.0.0.1:8000/mail/getMails/"+mail)
+        fetch("http://"+window.location.hostname+":8000/mail/getMails/"+mail)
            .then((response) => response.json())
            .then((data) => {
                             let state=this.state;
@@ -50,7 +50,7 @@ class Home extends Component {
         
      }
     handleClickChangeMail(){
-       fetch("http://127.0.0.1:8000/mail/getAdress")
+       fetch("http://"+window.location.hostname+":8000/mail/getAdress")
            .then((response) => response.json())
            .then((data) => {
                             const state=this.state;
