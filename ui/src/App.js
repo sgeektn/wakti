@@ -5,7 +5,6 @@ import Home from './components/Home'
 import Api from './components/Api'
 import AboutUs from './components/AboutUs'
 function App() {
-  document.title = 'WAKTI DISPOABLE MAIL'
   return (
     <BrowserRouter>
       <Menu />
