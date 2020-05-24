@@ -20,7 +20,7 @@ function Menu() {
             <div className="collapse navbar-collapse" id="navcol-1">
                 <ul className="nav navbar-nav ml-auto">
                     <li className="nav-item" role="presentation"><NavLink className="nav-link active" to="/">Home</NavLink></li>
-                    <li className="nav-item" role="presentation"><NavLink className="nav-link" to="/api">Api</NavLink></li>
+                    <li className="nav-item" role="presentation"><NavLink className="nav-link" to="/api">API</NavLink></li>
                     <li className="nav-item" role="presentation"><NavLink className="nav-link" to="/aboutus">About us</NavLink></li>
                 </ul>
             </div>

@@ -37,7 +37,7 @@ class GetAdress(APIView):
 	"""
 	Generate disposable email adress
 	"""
-	def get(self,request,domain="all"):
+	def get(self,request,api_key,domain="all"):
 		
 		domains_list=[]
 		with open("mailgetter/domains.txt") as domains:
@@ -62,7 +62,7 @@ class GetDomains(APIView):
 	"""
 	Get available domains
 	"""
-	def get(self,request):
+	def get(self,request,api_key):
 		purge_mail()
 		domains_list=[]
 		with open("mailgetter/domains.txt") as domains:
@@ -80,7 +80,7 @@ class GetMail(APIView):
 	"""
 	Get last mail
 	"""
-	def get(self,request,mail):
+	def get(self,request,mail,api_key):
 		purge_mail()
 		update_db(mail)
 		result={}
@@ -99,7 +99,7 @@ class DeleteMail(APIView):
 	"""
 	Delete mail , must specify id and reciever
 	"""
-	def get(self,request,mail,mail_id):
+	def get(self,request,mail,mail_id,api_key):
 		result={}
 		mail=Mail.objects.filter(id=mail_id,reciever=mail).last()
 		if mail!=None:
@@ -115,7 +115,7 @@ class GetMails(APIView):
 	"""
 	Get all recieved mails
 	"""
-	def get(self,request,mail):
+	def get(self,request,mail,api_key):
 		purge_mail()
 		update_db(mail)
 		result=[]

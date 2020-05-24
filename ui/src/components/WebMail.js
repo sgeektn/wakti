@@ -15,7 +15,7 @@ class WebMail extends Component {
       document.getElementById("myModal").style.display="block";
     }
     deleteMail(mail){
-      fetch("http://"+window.location.hostname+":8000/mail/deleteMail/"+mail.reciever+"/"+mail.id).then((response)=> response.json()).then((data)=>{ this.domains=data})
+      fetch("http://"+window.location.hostname+":8000/mail/deleteMail/"+mail.reciever+"/"+mail.id+"/fake_api").then((response)=> response.json()).then((data)=>{ this.domains=data})
       this.props.update();
     }
     render(){
